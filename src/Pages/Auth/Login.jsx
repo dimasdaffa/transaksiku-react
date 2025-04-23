@@ -21,7 +21,7 @@ const Login = () => {
       // Hapus password dari data yang disimpan untuk keamanan
       const { password, ...userWithoutPassword } = dummyUser;
       localStorage.setItem('userData', JSON.stringify(userWithoutPassword));
-      navigate('/admin');
+      navigate('/admin/transfer'); 
 
       Swal.fire({
         title: 'Success!',
