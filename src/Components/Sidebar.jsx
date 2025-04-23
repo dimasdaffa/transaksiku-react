@@ -4,10 +4,9 @@ import { NavLink } from 'react-router-dom';
 const Sidebar = () => {
   return (
     <div className="w-64 bg-blue-900 text-white flex flex-col p-4 h-screen">
-      <h1 className="text-2xl font-bold mb-6">Admin</h1>
       <nav>
         <NavLink
-          to="/admin/dashboard"
+          to="/admin"
           className={({ isActive }) =>
             `flex items-center p-3 rounded mt-2 ${
               isActive ? 'bg-blue-700' : 'bg-blue-800 hover:bg-blue-700'
@@ -17,18 +16,18 @@ const Sidebar = () => {
           <span className="ml-2">🏠 Dashboard</span>
         </NavLink>
         <NavLink
-          to="/admin/mahasiswa"
+          to="/admin/transfer"
           className={({ isActive }) =>
             `flex items-center p-3 rounded mt-2 ${
               isActive ? 'bg-blue-700' : 'bg-blue-800 hover:bg-blue-700'
             }`
           }
         >
-          <span className="ml-2">🎓 Transfer</span>
+          <span className="ml-2">💸 Transfer</span>
         </NavLink>
       </nav>
     </div>
   );
 };
 
-export default Sidebar; 
+export default Sidebar;

@@ -21,6 +21,10 @@ const Router = createBrowserRouter([
                 path: "transfer",
                 element: <TransferPage />,
             },
+            {
+                path:"dashboard",
+                element: <h1>Dashboard</h1>,
+            }
         ],
     },
 ]);
