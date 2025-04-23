@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from '../../Components/Button';
 import { dummyUser } from '../../Data/Dummy.js';
+import Swal from 'sweetalert2';
 
 const Login = () => {
 
@@ -17,11 +18,20 @@ const Login = () => {
       // Hapus password dari data yang disimpan untuk keamanan
       const { password, ...userWithoutPassword } = dummyUser;
       localStorage.setItem('userData', JSON.stringify(userWithoutPassword));
-      alert('Login berhasil!');
-
+      Swal.fire({
+        title: 'Success!',
+        text: 'Do you want to continue',
+        icon: 'success',
+        confirmButtonText: 'Continue',
+      })
       // Arahkan ke dashboard
     } else {
-      alert('Email atau password salah!');
+        Swal.fire({
+            title: 'Failed!',
+            text: 'Do you want to continue',
+            icon: 'error',
+            confirmButtonText: 'Back'
+          })
     }
   };
 
