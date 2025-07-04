@@ -3,6 +3,9 @@ import Login from "../Pages/Auth/Login";
 import AdminLayout from "../Layouts/AdminLayout";
 import TransferPage from "../Pages/Transfer/TransferPage";
 import DashboardPage from "../Pages/Admin/Dashboard/DashboardPage";
+import RekeningPage from "../Pages/Admin/Rekening/RekeningPage";
+import LaporanPage from "../Pages/Admin/Laporan/LaporanPage";
+import SettingsPage from "../Pages/Admin/Settings/SettingsPage";
 import ProtectedRoute from "../Routes/ProtectedRoute";
 
 const Router = createBrowserRouter([
@@ -27,8 +30,20 @@ const Router = createBrowserRouter([
                 element: <DashboardPage />,
             },
             {
+                path: "rekening",
+                element: <RekeningPage />,
+            },
+            {
+                path: "laporan",
+                element: <LaporanPage />,
+            },
+            {
                 path: "transfer",
                 element: <TransferPage />,
+            },
+            {
+                path: "settings",
+                element: <SettingsPage />,
             },
         ],
     },

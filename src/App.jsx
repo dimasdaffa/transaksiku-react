@@ -1,20 +1,31 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './index.css'
-import Login from './Pages/Auth/Login'
-import { RouterProvider } from 'react-router-dom'
-import Router from './Routes/Router'
+import { RouterProvider } from 'react-router-dom';
+import Router from './Routes/Router';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { UserProvider } from './context/UserContext';
+import ErrorBoundary from './Components/ErrorBoundary';
+import './index.css';
 
-function App(){
+// Create a React Query client
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: 1,
+      staleTime: 60000, // 1 minute
+    }
+  }
+});
 
+function App() {
   return (
-    
-      <div>
-        <RouterProvider router={Router} />
-        </div>
-   
-  )
-
+    <ErrorBoundary showDetails={process.env.NODE_ENV === 'development'}>
+      <QueryClientProvider client={queryClient}>
+        <UserProvider>
+          <RouterProvider router={Router} />
+        </UserProvider>
+      </QueryClientProvider>
+    </ErrorBoundary>
+  );
 }
-export default App
+
+export default App;
