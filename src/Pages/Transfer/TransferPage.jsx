@@ -14,11 +14,9 @@ const TransferPage = () => {
   const [savedAccounts, setSavedAccounts] = useState([]);
   const [templates, setTemplates] = useState([]);
   
-  // Load data from localStorage on component mount
   useEffect(() => {
     console.log("TransferPage - Loading data from localStorage");
     
-    // Load transactions
     const savedTransactions = localStorage.getItem('transactions');
     if (savedTransactions) {
       try {
@@ -32,11 +30,9 @@ const TransferPage = () => {
     } else {
       console.log("No saved transactions, using dummy data");
       setTransactions(transaksiList);
-      // Save dummy data to localStorage so it's available next time
       localStorage.setItem('transactions', JSON.stringify(transaksiList));
     }
 
-    // Load scheduled transactions
     const savedScheduledTransactions = localStorage.getItem('scheduledTransactions');
     if (savedScheduledTransactions) {
       try {
@@ -47,20 +43,16 @@ const TransferPage = () => {
       }
     }
 
-    // Load user data and balance
     const savedSaldo = localStorage.getItem('saldo');
     if (savedSaldo) {
       setUser(prevUser => ({ ...prevUser, saldo: parseInt(savedSaldo) }));
     } else {
-      // If no saved balance, use the dummy user's balance and save it
       localStorage.setItem('saldo', dummyUser.saldo);
     }
 
-    // Load saved accounts from RekeningData
     const accounts = generateRekeningData();
     setSavedAccounts(accounts);
 
-    // Load templates
     const savedTemplates = localStorage.getItem('transferTemplates');
     if (savedTemplates) {
       try {
@@ -72,7 +64,6 @@ const TransferPage = () => {
     }
   }, []);
 
-  // Save transactions to localStorage whenever they change
   useEffect(() => {
     if (transactions && transactions.length >= 0) {
       console.log("Saving transactions to localStorage:", transactions);
@@ -80,14 +71,12 @@ const TransferPage = () => {
     }
   }, [transactions]);
 
-  // Save scheduled transactions to localStorage whenever they change
   useEffect(() => {
     if (scheduledTransactions && scheduledTransactions.length >= 0) {
       localStorage.setItem('scheduledTransactions', JSON.stringify(scheduledTransactions));
     }
   }, [scheduledTransactions]);
 
-  // Save templates to localStorage whenever they change
   useEffect(() => {
     if (templates && templates.length >= 0) {
       localStorage.setItem('transferTemplates', JSON.stringify(templates));
@@ -98,14 +87,12 @@ const TransferPage = () => {
     console.log("Adding new transaction:", newTransaction, "isScheduled:", isScheduled);
     
     if (isScheduled) {
-      // Add to scheduled transactions
       setScheduledTransactions(prev => {
         const updated = [...prev, newTransaction];
         console.log("Updated scheduled transactions:", updated);
         return updated;
       });
     } else {
-      // Add to regular transactions and deduct balance
       setTransactions(prev => {
         const updated = [newTransaction, ...(prev || [])];
         console.log("Updated transactions:", updated);
@@ -118,7 +105,6 @@ const TransferPage = () => {
           saldo: prevUser.saldo - newTransaction.nominal,
         };
         
-        // Save updated balance to localStorage
         localStorage.setItem('saldo', updatedUser.saldo);
         return updatedUser;
       });
@@ -144,14 +130,12 @@ const TransferPage = () => {
         setTransactions([]);
         setScheduledTransactions([]);
         
-        // Reset saldo to initial value
         setUser((prevUser) => {
           const updatedUser = { ...prevUser, saldo: dummyUser.saldo };
           localStorage.setItem('saldo', updatedUser.saldo);
           return updatedUser;
         });
   
-        // Clear localStorage items
         localStorage.removeItem('transactions');
         localStorage.removeItem('scheduledTransactions');
   
@@ -164,7 +148,6 @@ const TransferPage = () => {
     });
   };
 
-  // Combine regular and scheduled transactions for display
   const allTransactions = [...(transactions || []), ...(scheduledTransactions || [])];
   console.log("Combined transactions for display:", allTransactions);
   

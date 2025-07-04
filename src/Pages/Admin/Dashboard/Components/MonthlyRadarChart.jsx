@@ -12,7 +12,6 @@ import {
 import { formatCurrency } from '../../../../utils/dummyData';
 
 const MonthlyRadarChart = ({ data }) => {
-  // Custom tooltip for the radar chart
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
       return (

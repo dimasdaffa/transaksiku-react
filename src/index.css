@@ -1,2 +1,63 @@
 @import "tailwindcss";
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Dark mode styling for common components */
+@layer components {
+  .dark {
+    @apply bg-gray-900 text-gray-100;
+  }
+
+  /* Card styling */
+  .dark .card,
+  .dark .bg-white {
+    @apply bg-gray-800 border-gray-700;
+  }
+
+  /* Input styling */
+  .dark input,
+  .dark textarea,
+  .dark select {
+    @apply bg-gray-800 border-gray-700 text-gray-100;
+  }
+
+  /* Table styling */
+  .dark table {
+    @apply bg-gray-800;
+  }
+
+  .dark th {
+    @apply bg-gray-800 text-gray-100 border-gray-700;
+  }
+
+  .dark td {
+    @apply border-gray-700;
+  }
+
+  .dark tbody tr:hover {
+    @apply bg-gray-700;
+  }
+
+  /* Text colors */
+  .dark .text-gray-500,
+  .dark .text-gray-600,
+  .dark .text-gray-700 {
+    @apply text-gray-400;
+  }
+
+  .dark .text-gray-800,
+  .dark .text-gray-900,
+  .dark .text-black {
+    @apply text-gray-300;
+  }
+
+  /* Border colors */
+  .dark .border,
+  .dark .border-gray-200,
+  .dark .border-gray-300 {
+    @apply border-gray-700;
+  }
+}
+

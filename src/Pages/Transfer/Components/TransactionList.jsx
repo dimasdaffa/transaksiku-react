@@ -4,7 +4,6 @@ import TransactionCard from './TransactionCard';
 const TransactionList = ({ transactions }) => {
   const [filter, setFilter] = useState('all');
   
-  // Log to debug transactions data
   console.log('TransactionList received transactions:', transactions);
   
   const filteredTransactions = transactions ? transactions.filter(transaction => {

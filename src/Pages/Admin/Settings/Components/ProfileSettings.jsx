@@ -3,13 +3,11 @@ import Card from '../../../../Components/Card';
 import Swal from 'sweetalert2';
 
 const ProfileSettings = () => {
-  // Get user data from localStorage or use dummy data
   const getUserData = () => {
     const storedData = localStorage.getItem('userData');
     if (storedData) {
       return JSON.parse(storedData);
     }
-    // Default dummy data
     return {
       name: 'Andi Saputra',
       email: 'user@transaksiku.com',
@@ -22,7 +20,6 @@ const ProfileSettings = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Update form data when profile data changes
   useEffect(() => {
     setFormData({ ...profileData });
   }, [profileData]);
@@ -39,12 +36,9 @@ const ProfileSettings = () => {
     e.preventDefault();
     setIsLoading(true);
     
-    // Simulate API call
     setTimeout(() => {
-      // Update profile data in state and localStorage
       setProfileData(formData);
       
-      // Update localStorage but remove any sensitive data if present
       const { password, ...safeData } = formData;
       localStorage.setItem('userData', JSON.stringify(safeData));
       

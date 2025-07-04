@@ -9,10 +9,8 @@ import SearchFilter from './Components/SearchFilter';
 import BulkActions from './Components/BulkActions';
 import Pagination from './Components/Pagination';
 
-// Simulate API calls with delays
 const fetchAccounts = async () => {
   await new Promise(resolve => setTimeout(resolve, 500));
-  // Load from localStorage or generate new data if not exists
   const savedAccounts = localStorage.getItem('transaksiku_accounts');
   if (savedAccounts) {
     return JSON.parse(savedAccounts);
@@ -37,13 +35,11 @@ const RekeningPage = () => {
   const itemsPerPage = 8;
   const queryClient = useQueryClient();
 
-  // React Query for fetching accounts
   const { data: accounts = [], isLoading, isError } = useQuery({
     queryKey: ['accounts'],
     queryFn: fetchAccounts
   });
 
-  // Debounced search term
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -55,13 +51,11 @@ const RekeningPage = () => {
     };
   }, [searchTerm]);
 
-  // Create account mutation
   const createMutation = useMutation({
     mutationFn: async (newAccount) => {
       await new Promise(resolve => setTimeout(resolve, 500)); // Simulate API delay
       const createdAccount = { ...newAccount, id: uuidv4(), createdAt: new Date().toISOString() };
       
-      // Update local storage
       const currentAccounts = queryClient.getQueryData(['accounts']) || [];
       const updatedAccounts = [...currentAccounts, createdAccount];
       localStorage.setItem('transaksiku_accounts', JSON.stringify(updatedAccounts));
@@ -80,12 +74,10 @@ const RekeningPage = () => {
     }
   });
 
-  // Update account mutation
   const updateMutation = useMutation({
     mutationFn: async (updatedAccount) => {
       await new Promise(resolve => setTimeout(resolve, 500)); // Simulate API delay
       
-      // Update local storage
       const currentAccounts = queryClient.getQueryData(['accounts']) || [];
       const updatedAccounts = currentAccounts.map(account => 
         account.id === updatedAccount.id ? updatedAccount : account
@@ -108,12 +100,10 @@ const RekeningPage = () => {
     }
   });
 
-  // Delete account mutation
   const deleteMutation = useMutation({
     mutationFn: async (accountId) => {
       await new Promise(resolve => setTimeout(resolve, 500)); // Simulate API delay
       
-      // Update local storage
       const currentAccounts = queryClient.getQueryData(['accounts']) || [];
       const updatedAccounts = currentAccounts.filter(account => account.id !== accountId);
       localStorage.setItem('transaksiku_accounts', JSON.stringify(updatedAccounts));
@@ -127,12 +117,10 @@ const RekeningPage = () => {
     }
   });
 
-  // Bulk delete mutation
   const bulkDeleteMutation = useMutation({
     mutationFn: async (accountIds) => {
       await new Promise(resolve => setTimeout(resolve, 500)); // Simulate API delay
       
-      // Update local storage
       const currentAccounts = queryClient.getQueryData(['accounts']) || [];
       const updatedAccounts = currentAccounts.filter(account => !accountIds.includes(account.id));
       localStorage.setItem('transaksiku_accounts', JSON.stringify(updatedAccounts));
@@ -153,17 +141,14 @@ const RekeningPage = () => {
     }
   });
 
-  // Handle adding a new account
   const handleAddAccount = (account) => {
     createMutation.mutate(account);
   };
 
-  // Handle updating an account
   const handleUpdateAccount = (account) => {
     updateMutation.mutate(account);
   };
 
-  // Handle deleting an account with confirmation
   const handleDeleteAccount = (accountId) => {
     Swal.fire({
       title: 'Hapus Rekening',
@@ -186,7 +171,6 @@ const RekeningPage = () => {
     });
   };
 
-  // Handle bulk delete with confirmation
   const handleBulkDelete = () => {
     if (selectedAccounts.length === 0) return;
     
@@ -206,7 +190,6 @@ const RekeningPage = () => {
     });
   };
 
-  // Handle selecting/deselecting all accounts
   const handleSelectAll = (checked) => {
     if (checked) {
       const allVisibleIds = filteredAccounts.map(account => account.id);
@@ -216,7 +199,6 @@ const RekeningPage = () => {
     }
   };
 
-  // Handle selecting/deselecting a single account
   const handleSelectAccount = (accountId, checked) => {
     if (checked) {
       setSelectedAccounts(prev => [...prev, accountId]);
@@ -225,7 +207,6 @@ const RekeningPage = () => {
     }
   };
 
-  // Handle sorting
   const handleSort = (key) => {
     setSortConfig({
       key,
@@ -233,7 +214,6 @@ const RekeningPage = () => {
     });
   };
 
-  // Filter accounts based on search term and bank filter
   const filteredAccounts = accounts.filter(account => {
     const matchesSearch = account.name.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
                           account.accountNumber.includes(debouncedSearchTerm);
@@ -241,7 +221,6 @@ const RekeningPage = () => {
     return matchesSearch && matchesBank;
   });
 
-  // Sort accounts based on the current sortConfig
   const sortedAccounts = [...filteredAccounts].sort((a, b) => {
     if (sortConfig.key === 'createdAt') {
       return sortConfig.direction === 'asc' 
@@ -258,12 +237,10 @@ const RekeningPage = () => {
     return 0;
   });
 
-  // Pagination
   const totalPages = Math.ceil(sortedAccounts.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedAccounts = sortedAccounts.slice(startIndex, startIndex + itemsPerPage);
 
-  // Get unique banks for filtering
   const uniqueBanks = [...new Set(accounts.map(account => account.bank))];
   
   return (

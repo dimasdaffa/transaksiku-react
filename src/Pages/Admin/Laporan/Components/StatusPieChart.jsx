@@ -9,7 +9,6 @@ const StatusPieChart = ({ transactions }) => {
     [STATUS_OPTIONS.FAILED]: '#ef4444',  // red
   };
 
-  // Prepare chart data
   const chartData = useMemo(() => {
     const statusCounts = transactions.reduce((acc, transaction) => {
       const { status } = transaction;
@@ -30,7 +29,6 @@ const StatusPieChart = ({ transactions }) => {
     }));
   }, [transactions]);
   
-  // Custom tooltip
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
@@ -47,14 +45,12 @@ const StatusPieChart = ({ transactions }) => {
     return null;
   };
   
-  // Custom label renderer
   const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index, name }) => {
     const RADIAN = Math.PI / 180;
     const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
     const x = cx + radius * Math.cos(-midAngle * RADIAN);
     const y = cy + radius * Math.sin(-midAngle * RADIAN);
     
-    // Only show percentage label if it's significant enough (> 5%)
     if (percent < 0.05) return null;
     
     return (

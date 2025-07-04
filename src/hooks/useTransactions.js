@@ -7,7 +7,6 @@ import dayjs from 'dayjs';
 
 const STORAGE_KEY = 'transactions_data';
 
-// Helper to simulate API call delay
 const simulateApiCall = (data, delay = 800) => {
   return new Promise((resolve) => {
     setTimeout(() => resolve(data), delay);
@@ -18,23 +17,18 @@ export const useTransactions = () => {
   const { updateBalance } = useUser();
   const queryClient = useQueryClient();
   
-  // Fetch transactions
   const fetchTransactions = async () => {
-    // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 800));
     
-    // Try to get from localStorage
     const storedData = localStorage.getItem(STORAGE_KEY);
     if (storedData) {
       return JSON.parse(storedData);
     }
     
-    // If not in localStorage, use dummy data
     localStorage.setItem(STORAGE_KEY, JSON.stringify(dummyTransactions));
     return dummyTransactions;
   };
   
-  // Query transactions
   const {
     data: transactions = [],
     isLoading,
@@ -46,20 +40,16 @@ export const useTransactions = () => {
     queryFn: fetchTransactions
   });
   
-  // Add transaction mutation with optimistic update
   const addTransaction = useMutation({
     mutationFn: async (newTransaction) => {
-      // Generate ID and other fields if not provided
       const transaction = {
         id: newTransaction.id || `TRX${Date.now()}`,
         date: newTransaction.date || new Date().toISOString(),
         ...newTransaction
       };
       
-      // Simulate API call
       await simulateApiCall(transaction);
       
-      // Update localStorage
       const currentData = queryClient.getQueryData(['transactions']) || [];
       const updatedData = [transaction, ...currentData];
       localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedData));
@@ -67,13 +57,10 @@ export const useTransactions = () => {
       return transaction;
     },
     onMutate: async (newTransaction) => {
-      // Cancel any outgoing refetches
       await queryClient.cancelQueries({ queryKey: ['transactions'] });
       
-      // Snapshot the previous value
       const previousTransactions = queryClient.getQueryData(['transactions']);
       
-      // Optimistically update the cache
       const optimisticTransaction = {
         id: `temp-${uuidv4()}`,
         date: new Date().toISOString(),
@@ -84,41 +71,32 @@ export const useTransactions = () => {
         [optimisticTransaction, ...(old || [])]
       );
       
-      // If this affects user balance, update it optimistically
       let rollbackBalance = null;
       if (newTransaction.amount && !newTransaction.isScheduled) {
-        // For outgoing transactions (negative amount)
         const amount = -Math.abs(newTransaction.amount);
         rollbackBalance = updateBalance(amount, true);
       }
       
-      // Return a context object with the snapshotted value
       return { previousTransactions, rollbackBalance };
     },
     onError: (err, newTransaction, context) => {
-      // Roll back to the previous state if there's an error
       if (context?.previousTransactions) {
         queryClient.setQueryData(['transactions'], context.previousTransactions);
       }
       
-      // Roll back balance update if needed
       if (context?.rollbackBalance) {
         context.rollbackBalance();
       }
     },
     onSettled: () => {
-      // Invalidate and refetch to ensure our local data is in sync with the server
       queryClient.invalidateQueries({ queryKey: ['transactions'] });
     },
   });
   
-  // Delete transaction mutation
   const deleteTransaction = useMutation({
     mutationFn: async (transactionId) => {
-      // Simulate API call
       await simulateApiCall({ id: transactionId });
       
-      // Update localStorage
       const currentData = queryClient.getQueryData(['transactions']) || [];
       const updatedData = currentData.filter(t => t.id !== transactionId);
       localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedData));
@@ -126,36 +104,28 @@ export const useTransactions = () => {
       return transactionId;
     },
     onMutate: async (transactionId) => {
-      // Cancel any outgoing refetches
       await queryClient.cancelQueries({ queryKey: ['transactions'] });
       
-      // Snapshot the previous value
       const previousTransactions = queryClient.getQueryData(['transactions']);
       
-      // Find the transaction to be deleted (for potential balance restoration)
       const transactionToDelete = previousTransactions?.find(t => t.id === transactionId);
       
-      // Optimistically update the cache
       queryClient.setQueryData(['transactions'], old => 
         old ? old.filter(t => t.id !== transactionId) : []
       );
       
-      // If this affects user balance, update it optimistically
       let rollbackBalance = null;
       if (transactionToDelete?.amount && transactionToDelete.status === 'Berhasil') {
-        // For deleted outgoing transactions, restore the balance
         rollbackBalance = updateBalance(Math.abs(transactionToDelete.amount), true);
       }
       
       return { previousTransactions, rollbackBalance };
     },
     onError: (err, transactionId, context) => {
-      // Roll back to the previous state if there's an error
       if (context?.previousTransactions) {
         queryClient.setQueryData(['transactions'], context.previousTransactions);
       }
       
-      // Roll back balance update if needed
       if (context?.rollbackBalance) {
         context.rollbackBalance();
       }
@@ -165,7 +135,6 @@ export const useTransactions = () => {
     },
   });
   
-  // Filter transactions by date range
   const filterByDateRange = useCallback((startDate, endDate) => {
     if (!startDate && !endDate) return transactions;
     
@@ -181,7 +150,6 @@ export const useTransactions = () => {
     });
   }, [transactions]);
   
-  // Get transactions stats
   const getTransactionStats = useCallback(() => {
     if (!transactions.length) return { total: 0, success: 0, pending: 0, failed: 0, totalAmount: 0 };
     

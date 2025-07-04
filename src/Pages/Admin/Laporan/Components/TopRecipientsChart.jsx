@@ -12,9 +12,7 @@ import {
 import { formatCurrency } from '../../../../Data/TransactionData';
 
 const TopRecipientsChart = ({ transactions }) => {
-  // Prepare chart data for top recipients
   const chartData = useMemo(() => {
-    // Group transactions by recipient
     const recipientMap = transactions.reduce((acc, transaction) => {
       const { recipient, amount } = transaction;
       
@@ -32,13 +30,11 @@ const TopRecipientsChart = ({ transactions }) => {
       return acc;
     }, {});
     
-    // Convert to array, sort by total amount, and take top 5
     return Object.values(recipientMap)
       .sort((a, b) => b.totalAmount - a.totalAmount)
       .slice(0, 5);
   }, [transactions]);
   
-  // Custom tooltip
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload;

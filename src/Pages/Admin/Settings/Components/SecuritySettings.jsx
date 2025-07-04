@@ -12,7 +12,6 @@ const SecuritySettings = () => {
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   
-  // Dummy active sessions data
   const activeSessions = [
     {
       id: 'sess_1',
@@ -51,7 +50,6 @@ const SecuritySettings = () => {
   const handlePasswordSubmit = (e) => {
     e.preventDefault();
     
-    // Validate form
     if (passwordForm.newPassword !== passwordForm.confirmPassword) {
       Swal.fire({
         title: 'Terjadi Kesalahan',
@@ -72,7 +70,6 @@ const SecuritySettings = () => {
       return;
     }
     
-    // Simulate API call
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
@@ -95,7 +92,6 @@ const SecuritySettings = () => {
     setTwoFactorEnabled(!twoFactorEnabled);
     
     if (!twoFactorEnabled) {
-      // Show 2FA setup mock
       Swal.fire({
         title: 'Setup 2FA',
         html: `

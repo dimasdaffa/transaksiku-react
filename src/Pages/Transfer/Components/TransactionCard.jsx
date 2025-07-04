@@ -2,7 +2,6 @@ import React from 'react';
 import Swal from 'sweetalert2';
 
 const TransactionCard = ({ transaction }) => {
-  // Format date for scheduled transfers
   const formatScheduledDate = () => {
     if (transaction.scheduledDate) {
       const date = new Date(transaction.scheduledDate);
@@ -15,7 +14,6 @@ const TransactionCard = ({ transaction }) => {
     return '';
   };
 
-  // Generate status badge based on transaction status
   const getStatusBadge = () => {
     switch (transaction.status) {
       case 'Berhasil':
@@ -29,9 +27,7 @@ const TransactionCard = ({ transaction }) => {
     }
   };
 
-  // Show receipt when clicked on "Lihat Bukti Transfer"
   const showReceipt = () => {
-    // Generate receipt HTML
     const receiptHTML = `
       <div style="font-family: Arial, sans-serif; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
         <div style="text-align: center; margin-bottom: 20px;">
@@ -59,7 +55,6 @@ const TransactionCard = ({ transaction }) => {
       </div>
     `;
 
-    // Show receipt in SweetAlert
     Swal.fire({
       title: 'Bukti Transfer',
       html: receiptHTML,

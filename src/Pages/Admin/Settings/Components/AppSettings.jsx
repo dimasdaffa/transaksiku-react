@@ -1,32 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Card from '../../../../Components/Card';
 import Swal from 'sweetalert2';
+import { useUser } from '../../../../context/UserContext';
 
 const AppSettings = () => {
-  // Get theme preference from localStorage or default to 'light'
-  const [theme, setTheme] = useState(() => {
-    const savedTheme = localStorage.getItem('theme');
-    return savedTheme || 'light';
-  });
+  const { theme, toggleTheme } = useUser();
   
-  // Effect to apply theme when it changes
-  useEffect(() => {
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-    localStorage.setItem('theme', theme);
-  }, [theme]);
-  
-  const toggleTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
-    setTheme(newTheme);
+  const handleThemeToggle = () => {
+    toggleTheme();
     
-    // Show success notification
     Swal.fire({
       title: 'Berhasil!',
-      text: `Tema berhasil diubah ke mode ${newTheme === 'light' ? 'Terang' : 'Gelap'}`,
+      text: `Tema berhasil diubah ke mode ${theme === 'dark' ? 'Terang' : 'Gelap'}`,
       icon: 'success',
       confirmButtonText: 'OK',
       timer: 1500
@@ -51,7 +36,7 @@ const AppSettings = () => {
                 {theme === 'light' ? 'Terang' : 'Gelap'}
               </span>
               <button
-                onClick={toggleTheme}
+                onClick={handleThemeToggle}
                 className={`relative inline-flex items-center h-6 rounded-full w-11 focus:outline-none ${
                   theme === 'dark' ? 'bg-blue-600' : 'bg-gray-300'
                 }`}

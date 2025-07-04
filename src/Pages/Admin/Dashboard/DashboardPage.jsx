@@ -10,9 +10,7 @@ import BalanceAreaChart from './Components/BalanceAreaChart';
 import MonthlyRadarChart from './Components/MonthlyRadarChart';
 import ErrorBoundary from '../../../Components/ErrorBoundary';
 
-// Function to simulate data fetching with React Query
 const fetchDashboardData = async () => {
-  // Simulate API call delay
   await new Promise(resolve => setTimeout(resolve, 800));
   return dashboardStats;
 };
@@ -20,7 +18,6 @@ const fetchDashboardData = async () => {
 const DashboardPage = () => {
   const { theme } = useUser();
   
-  // Fetch dashboard data using React Query
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['dashboardData'],
     queryFn: fetchDashboardData,

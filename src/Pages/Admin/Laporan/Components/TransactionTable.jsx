@@ -6,15 +6,12 @@ const TransactionTable = ({ transactions }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   
-  // Get current transactions for pagination
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = transactions.slice(indexOfFirstItem, indexOfLastItem);
   
-  // Calculate total pages
   const totalPages = Math.ceil(transactions.length / itemsPerPage);
   
-  // Get status badge class based on status
   const getStatusBadge = (status) => {
     switch(status) {
       case 'Berhasil':
@@ -28,33 +25,27 @@ const TransactionTable = ({ transactions }) => {
     }
   };
   
-  // Handle page change
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
   
-  // Generate page numbers
   const getPageNumbers = () => {
     const pageNumbers = [];
     const maxPagesToShow = 5;
     
     if (totalPages <= maxPagesToShow) {
-      // Show all pages if total pages are less than max to show
       for (let i = 1; i <= totalPages; i++) {
         pageNumbers.push(i);
       }
     } else {
-      // Calculate range around current page
       let startPage = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2));
       let endPage = startPage + maxPagesToShow - 1;
       
-      // Adjust if end page is beyond total pages
       if (endPage > totalPages) {
         endPage = totalPages;
         startPage = Math.max(1, endPage - maxPagesToShow + 1);
       }
       
-      // Add pages with ellipsis if needed
       if (startPage > 1) {
         pageNumbers.push(1);
         if (startPage > 2) {

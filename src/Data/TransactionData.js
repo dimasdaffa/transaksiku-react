@@ -1,38 +1,32 @@
 import { v4 as uuidv4 } from 'uuid';
 import dayjs from 'dayjs';
 
-// Status options for transactions
 export const STATUS_OPTIONS = {
   SUCCESS: 'Berhasil',
   PENDING: 'Pending',
   FAILED: 'Gagal'
 };
 
-// Transaction types
 export const TRANSACTION_TYPES = {
   TRANSFER: 'Transfer',
   TOP_UP: 'Top Up',
   PAYMENT: 'Pembayaran'
 };
 
-// Helper to get random item from array
 const getRandomItem = (array) => {
   return array[Math.floor(Math.random() * array.length)];
 };
 
-// Helper to get random amount
 const getRandomAmount = (min = 10000, max = 5000000) => {
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
-// Helper to get random date within last 30 days
 const getRandomDate = (daysAgo = 30) => {
   const today = dayjs();
   const randomDaysAgo = Math.floor(Math.random() * daysAgo);
   return today.subtract(randomDaysAgo, 'day').toDate();
 };
 
-// Helper to generate random status with probabilities
 const getRandomStatus = () => {
   const rand = Math.random() * 100;
   if (rand < 80) {
@@ -44,11 +38,9 @@ const getRandomStatus = () => {
   }
 };
 
-// Generate mock transaction data - fixed to exactly 15 transactions
 export const generateTransactionData = () => {
   const count = 50; // Fixed count to exactly 15
   
-  // Common recipients/banks for consistency
   const recipients = [
     { name: 'Ahmad Rizky', accountNumber: '1234567890', bank: 'BCA' },
     { name: 'Budi Santoso', accountNumber: '0987654321', bank: 'BRI' },
@@ -57,7 +49,6 @@ export const generateTransactionData = () => {
     { name: 'Eko Prasetyo', accountNumber: '5678901234', bank: 'CIMB Niaga' },
   ];
 
-  // Generate transactions
   const transactions = [];
   for (let i = 0; i < count; i++) {
     const recipient = getRandomItem(recipients);
@@ -71,7 +62,6 @@ export const generateTransactionData = () => {
     const amount = getRandomAmount();
     const status = getRandomStatus();
     
-    // Description based on type
     let description = '';
     if (transactionType === TRANSACTION_TYPES.TRANSFER) {
       description = `Transfer ke ${recipient.name}`;
@@ -98,16 +88,12 @@ export const generateTransactionData = () => {
     });
   }
 
-  // Sort by date (most recent first)
   return transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
 };
 
-// Mock function to simulate API call
 export const fetchTransactionData = async () => {
   await new Promise(resolve => setTimeout(resolve, 800)); // Simulate API delay
   
-  // Force regenerate data to ensure we have exactly 15 transactions
-  // Remove any existing data in localStorage
   localStorage.removeItem('transaksiku_transactions');
   
   const generatedData = generateTransactionData();
@@ -115,7 +101,6 @@ export const fetchTransactionData = async () => {
   return generatedData;
 };
 
-// Helper to format currency in IDR
 export const formatCurrency = (amount) => {
   return new Intl.NumberFormat('id-ID', {
     style: 'currency',
@@ -124,7 +109,6 @@ export const formatCurrency = (amount) => {
   }).format(amount);
 };
 
-// Helper to format date
 export const formatDate = (dateString) => {
   return dayjs(dateString).format('DD MMM YYYY, HH:mm');
 };

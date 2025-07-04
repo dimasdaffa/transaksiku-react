@@ -9,7 +9,6 @@ import StatusPieChart from './Components/StatusPieChart';
 import TopRecipientsChart from './Components/TopRecipientsChart';
 
 const LaporanPage = () => {
-  // State for filters
   const [filters, setFilters] = useState({
     dateRange: {
       startDate: null,
@@ -23,16 +22,13 @@ const LaporanPage = () => {
     recipient: ''
   });
 
-  // Fetch transaction data
   const { data: transactions = [], isLoading, isError } = useQuery({
     queryKey: ['transactions'],
     queryFn: fetchTransactionData
   });
 
-  // Apply filters to transactions
   const filteredTransactions = useMemo(() => {
     return transactions.filter(transaction => {
-      // Date range filter
       if (filters.dateRange.startDate && filters.dateRange.endDate) {
         const transactionDate = new Date(transaction.date);
         const startDate = new Date(filters.dateRange.startDate);
@@ -44,7 +40,6 @@ const LaporanPage = () => {
         }
       }
 
-      // Amount range filter
       if (filters.amountRange.min && transaction.amount < parseInt(filters.amountRange.min)) {
         return false;
       }
@@ -52,12 +47,10 @@ const LaporanPage = () => {
         return false;
       }
 
-      // Status filter
       if (filters.status.length > 0 && !filters.status.includes(transaction.status)) {
         return false;
       }
 
-      // Recipient filter
       if (filters.recipient && 
          !transaction.recipient.toLowerCase().includes(filters.recipient.toLowerCase()) &&
          !transaction.accountNumber.includes(filters.recipient)) {
@@ -68,7 +61,6 @@ const LaporanPage = () => {
     });
   }, [transactions, filters]);
 
-  // Calculate summary data for cards
   const summaryData = useMemo(() => {
     if (filteredTransactions.length === 0) {
       return {
@@ -87,12 +79,10 @@ const LaporanPage = () => {
     };
   }, [filteredTransactions]);
 
-  // Handle filter changes
   const handleFilterChange = (newFilters) => {
     setFilters(prev => ({ ...prev, ...newFilters }));
   };
 
-  // Clear all filters
   const handleClearFilters = () => {
     setFilters({
       dateRange: {

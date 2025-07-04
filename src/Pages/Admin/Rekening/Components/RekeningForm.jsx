@@ -35,7 +35,6 @@ const RekeningForm = ({ account, existingAccounts, onSave, onCancel, isLoading }
     const { name } = e.target;
     setTouched(prev => ({ ...prev, [name]: true }));
     
-    // Validate on blur
     const validationErrors = validateAccount(formData, existingAccounts);
     setErrors(validationErrors);
   };
@@ -43,7 +42,6 @@ const RekeningForm = ({ account, existingAccounts, onSave, onCancel, isLoading }
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    // Validate all fields before submission
     const validationErrors = validateAccount(formData, existingAccounts);
     setErrors(validationErrors);
     setTouched({
@@ -57,7 +55,6 @@ const RekeningForm = ({ account, existingAccounts, onSave, onCancel, isLoading }
     }
   };
 
-  // List of common banks in Indonesia
   const commonBanks = [
     'BCA', 'BRI', 'Mandiri', 'BNI', 'CIMB Niaga', 
     'Bank Permata', 'Bank Syariah Indonesia', 'Bank Danamon',

@@ -11,16 +11,13 @@ const RekeningList = ({
   onSelectAccount,
   onSelectAll,
 }) => {
-  // Format the date to a more readable format
   const formatDate = (dateString) => {
     return dayjs(dateString).format('DD MMM YYYY, HH:mm');
   };
 
-  // Check if all visible accounts are selected
   const allSelected = accounts.length > 0 && 
     accounts.every(account => selectedAccounts.includes(account.id));
   
-  // Get the sort icon based on current sort configuration
   const getSortIcon = (key) => {
     if (sortConfig.key !== key) return '↕️';
     return sortConfig.direction === 'asc' ? '↑' : '↓';

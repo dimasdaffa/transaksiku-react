@@ -8,10 +8,8 @@ const SettingsPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Get active tab from URL hash or default to 'profile'
   const [activeTab, setActiveTab] = useState('profile');
 
-  // Update active tab when URL hash changes
   useEffect(() => {
     const hash = location.hash.replace('#', '');
     if (hash && ['profile', 'app', 'security'].includes(hash)) {
@@ -19,7 +17,6 @@ const SettingsPage = () => {
     }
   }, [location]);
 
-  // Handle tab change
   const handleTabChange = (tab) => {
     setActiveTab(tab);
     navigate(`/admin/settings#${tab}`, { replace: true });

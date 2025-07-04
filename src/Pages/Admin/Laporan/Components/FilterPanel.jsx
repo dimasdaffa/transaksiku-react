@@ -4,10 +4,8 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 const FilterPanel = ({ filters, onFilterChange, onClearFilters }) => {
-  // Track the open/close state of the filter panel
   const [isExpanded, setIsExpanded] = useState(false);
   
-  // Handle date range changes
   const handleDateRangeChange = (dates) => {
     const [startDate, endDate] = dates;
     onFilterChange({
@@ -18,7 +16,6 @@ const FilterPanel = ({ filters, onFilterChange, onClearFilters }) => {
     });
   };
 
-  // Handle amount range changes
   const handleAmountChange = (e) => {
     const { name, value } = e.target;
     onFilterChange({
@@ -29,7 +26,6 @@ const FilterPanel = ({ filters, onFilterChange, onClearFilters }) => {
     });
   };
 
-  // Handle status selection
   const handleStatusChange = (status) => {
     const currentStatus = [...filters.status];
     if (currentStatus.includes(status)) {
@@ -43,7 +39,6 @@ const FilterPanel = ({ filters, onFilterChange, onClearFilters }) => {
     }
   };
 
-  // Handle recipient search
   const handleRecipientChange = (e) => {
     onFilterChange({ recipient: e.target.value });
   };

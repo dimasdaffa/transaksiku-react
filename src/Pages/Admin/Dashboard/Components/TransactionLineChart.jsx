@@ -11,7 +11,6 @@ import {
 } from 'recharts';
 
 const TransactionLineChart = ({ data }) => {
-  // Format the dates to be more readable
   const formattedData = data.map(item => {
     const date = new Date(item.date);
     return {

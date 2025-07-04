@@ -1,6 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
 
-// Generate sample data
 export const generateRekeningData = () => {
   const banks = ['BCA', 'BRI', 'Mandiri', 'BNI', 'CIMB Niaga'];
   const names = [
@@ -10,7 +9,6 @@ export const generateRekeningData = () => {
     'Muhammad Ali', 'Nina Safitri', 'Oscar Darmawan'
   ];
   
-  // Create 15 dummy accounts (reduced from 20)
   const accounts = [];
   
   for (let i = 0; i < 15; i++) {
@@ -30,7 +28,6 @@ export const generateRekeningData = () => {
   return accounts;
 };
 
-// Helper to generate realistic account numbers based on bank
 const generateRandomAccountNumber = (bank) => {
   let prefix = '';
   let length = 10;
@@ -69,7 +66,6 @@ const generateRandomAccountNumber = (bank) => {
   return number;
 };
 
-// Account validation function
 export const validateAccount = (account, existingAccounts = []) => {
   const errors = {};
 
@@ -87,7 +83,6 @@ export const validateAccount = (account, existingAccounts = []) => {
     errors.accountNumber = 'Nomor rekening tidak valid';
   }
 
-  // Check for unique account number (excluding the current account when editing)
   const isDuplicate = existingAccounts.some(
     acc => acc.accountNumber === account.accountNumber && acc.id !== account.id
   );

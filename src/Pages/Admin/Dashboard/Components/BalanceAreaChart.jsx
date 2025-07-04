@@ -11,7 +11,6 @@ import {
 import { formatCurrency } from '../../../../utils/dummyData';
 
 const BalanceAreaChart = ({ data }) => {
-  // Format the tooltip content
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
       return (
@@ -24,7 +23,6 @@ const BalanceAreaChart = ({ data }) => {
     return null;
   };
 
-  // Function to format large numbers to be more readable
   const formatYAxis = (value) => {
     if (value >= 1000000) {
       return `${Math.round(value / 1000000)}M`;

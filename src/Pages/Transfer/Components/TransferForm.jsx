@@ -16,7 +16,6 @@ const TransferForm = ({ onClose, onAddTransaction, saldo, savedAccounts, templat
   const [scheduleTransfer, setScheduleTransfer] = useState(false);
   const [scheduledDate, setScheduledDate] = useState(null);
 
-  // Handle template selection
   useEffect(() => {
     if (selectedTemplate && templates && templates.length > 0) {
       const template = templates.find(t => t.id === selectedTemplate);
@@ -29,7 +28,6 @@ const TransferForm = ({ onClose, onAddTransaction, saldo, savedAccounts, templat
     }
   }, [selectedTemplate, templates]);
 
-  // Handle saved account selection
   const handleAccountSelect = (account) => {
     if (account) {
       setRekening(account.accountNumber);
@@ -38,7 +36,6 @@ const TransferForm = ({ onClose, onAddTransaction, saldo, savedAccounts, templat
   };
 
   const handleSubmit = () => {
-    // Validasi input
     if ((!rekening && !selectedAccount) || nominal < 1000 || nominal > saldo) {
       Swal.fire({
         title: 'Gagal!',
@@ -49,14 +46,12 @@ const TransferForm = ({ onClose, onAddTransaction, saldo, savedAccounts, templat
       return;
     }
 
-    // Show confirmation modal instead of proceeding directly
     setShowConfirmation(true);
   };
 
   const handleConfirm = () => {
     setLoading(true);
 
-    // Save as template if option is selected
     if (saveAsTemplate && templateName.trim() !== '') {
       const newTemplate = {
         id: `TMPL${Date.now()}`,
@@ -69,7 +64,6 @@ const TransferForm = ({ onClose, onAddTransaction, saldo, savedAccounts, templat
       onSaveTemplate(newTemplate);
     }
 
-    // Simulate loading 2 detik
     setTimeout(() => {
       const newTransaction = {
         id: `TRX${Date.now()}`,
@@ -89,7 +83,6 @@ const TransferForm = ({ onClose, onAddTransaction, saldo, savedAccounts, templat
       onClose();
       setLoading(false);
 
-      // Show receipt after successful transfer
       if (!scheduleTransfer) {
         showReceipt(newTransaction);
       } else {
@@ -104,7 +97,6 @@ const TransferForm = ({ onClose, onAddTransaction, saldo, savedAccounts, templat
   };
 
   const showReceipt = (transaction) => {
-    // Generate receipt HTML
     const receiptHTML = `
       <div style="font-family: Arial, sans-serif; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
         <h2 style="text-align: center; color: #2563eb;">Bukti Transfer</h2>
@@ -124,7 +116,6 @@ const TransferForm = ({ onClose, onAddTransaction, saldo, savedAccounts, templat
       </div>
     `;
 
-    // Show receipt in SweetAlert
     Swal.fire({
       title: 'Transfer Berhasil',
       html: receiptHTML,
