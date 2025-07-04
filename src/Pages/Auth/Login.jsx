@@ -25,7 +25,7 @@ const Login = () => {
 
       Swal.fire({
         title: 'Success!',
-        text: 'Do you want to continue',
+        text: 'Login Successful',
         icon: 'success',
         confirmButtonText: 'Continue',
       })
@@ -33,7 +33,7 @@ const Login = () => {
     } else {
         Swal.fire({
             title: 'Failed!',
-            text: 'Do you want to continue',
+            text: 'Username atau Password salah!',
             icon: 'error',
             confirmButtonText: 'Back'   
           })
